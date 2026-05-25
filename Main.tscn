@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://d2p4ar7vduvbx"]
+
+[ext_resource type="Script" uid="uid://bt851qio7x3i" path="res://Main.gd" id="1_r0du0"]
+[ext_resource type="Script" uid="uid://cwswhlaigd70h" path="res://Camera.gd" id="1_uu6xs"]
+[ext_resource type="Script" uid="uid://djunu74liqxvx" path="res://tactical_grid.gd" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://dqn60l1l7g4mn" path="res://Unit.tscn" id="4_fos0i"]
+[ext_resource type="PackedScene" uid="uid://d1i0voqajdokf" path="res://Navigation.tscn" id="5_3dxm6"]
+
+[node name="Node3D" type="Node3D" unique_id=998961211]
+script = ExtResource("1_r0du0")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=104722961]
+transform = Transform3D(0.70710677, -0.49999997, 0.49999997, 0, 0.70710677, 0.70710677, -0.70710677, -0.49999997, 0.49999997, 10, 10, 10)
+current = true
+script = ExtResource("1_uu6xs")
+
+[node name="TacticalGrid" type="Node3D" parent="." unique_id=622350882]
+script = ExtResource("2_r0du0")
+
+[node name="Unit" parent="." unique_id=641869344 instance=ExtResource("4_fos0i")]
+
+[node name="Navigation" parent="." unique_id=138715284 instance=ExtResource("5_3dxm6")]
