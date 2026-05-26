@@ -49,9 +49,9 @@ func _process(delta):
 		velocity += transform.basis.x
 
 	# Optional: vertical movement like the editor
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("camera_up"):
 		velocity += transform.basis.y
-	if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed("camera_down"):
 		velocity -= transform.basis.y
 
 	if velocity != Vector3.ZERO:

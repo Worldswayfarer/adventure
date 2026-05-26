@@ -1,29 +1,30 @@
 [gd_scene format=3 uid="uid://dqn60l1l7g4mn"]
 
-[ext_resource type="Script" uid="uid://bdf3lt0w7nv8v" path="res://Unit.gd" id="1_c58w5"]
+[ext_resource type="Script" uid="uid://bdf3lt0w7nv8v" path="res://Units/Unit.gd" id="1_c58w5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3fl7"]
+albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ypl2c"]
 material = SubResource("StandardMaterial3D_r3fl7")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c58w5"]
-albedo_color = Color(0.10980392, 0, 1, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c58w5"]
 radius = 0.55
 height = 2.1
 
-[node name="Unit" type="CharacterBody3D" unique_id=641869344]
+[node name="Unit" type="CharacterBody3D" unique_id=641869344 groups=["Selectable"]]
 script = ExtResource("1_c58w5")
+is_enemy = false
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=986656251]
+avoidance_enabled = true
 debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(1, 0, 1, 1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1534258359]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_ypl2c")
-surface_material_override/0 = SubResource("StandardMaterial3D_c58w5")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=1085763992]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -34,3 +35,5 @@ shape = SubResource("CapsuleShape3D_c58w5")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="HitBox" unique_id=1949321907]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_c58w5")
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]

@@ -1,16 +1,27 @@
 extends Node3D
 
 @onready var camera = $Camera3D
-@onready var unit = $Unit
+@onready var unit : Unit = null
 @onready var grid = $TacticalGrid
 
 func _unhandled_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		if unit == null:
+			return
+		unit.deselect_unit()
+		unit = null
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var hit := get_mouse_world_position()
-		if hit == null:
+		if hit == {}:
+			return
+		if unit != null:
+			unit.move_to(hit.position)
+			return
+		var obj = hit.collider
+		if obj.has_method("is_selectable"):
+			unit = obj.select_unit()
 			return
 		
-		unit.move_to(hit.position)
 
 func get_mouse_world_position() -> Dictionary:
 	var mouse_pos = get_viewport().get_mouse_position()
