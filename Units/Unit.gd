@@ -1,8 +1,8 @@
 extends CharacterBody3D
 class_name Unit
 
-@onready var agent = $NavigationAgent3D
-@onready var mesh = $MeshInstance3D
+@onready var agent : NavigationAgent3D = $NavigationAgent3D
+@onready var mesh : MeshInstance3D  = $MeshInstance3D
 
 var speed = 10.0
 var is_selected = false
@@ -48,9 +48,6 @@ func _physics_process(_delta):
 	
 	agent.set_velocity(new_velocity)
 	
-	move_and_slide()
-
-
 
 func move_to(target_pos: Vector3):
 	agent.target_position = target_pos
@@ -58,3 +55,4 @@ func move_to(target_pos: Vector3):
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
 	velocity = safe_velocity
+	move_and_slide()
