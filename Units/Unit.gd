@@ -13,6 +13,8 @@ var original_color : Color
 var self_mesh : Mesh 
 var material : Material
 
+var is_moving : bool
+
 func is_selectable() -> bool:
 	return true 
 
@@ -29,6 +31,7 @@ func deselect_unit():
 	is_selected = false
 
 func _ready():
+	is_moving = false
 	var new_mesh = mesh.mesh.duplicate()
 	mesh.mesh = new_mesh
 	var new_mat = mesh.mesh.surface_get_material(0).duplicate(true)
@@ -39,7 +42,10 @@ func _ready():
 func _physics_process(_delta):
 	if agent.is_navigation_finished():
 		velocity = Vector3.ZERO
+		is_moving = false
 		move_and_slide()
+		return
+	if !is_moving:
 		return
 	
 	var next = agent.get_next_path_position()
@@ -51,8 +57,11 @@ func _physics_process(_delta):
 
 func move_to(target_pos: Vector3):
 	agent.target_position = target_pos
+	is_moving = true
 
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
+	if !is_moving:
+		return
 	velocity = safe_velocity
 	move_and_slide()
