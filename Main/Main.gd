@@ -14,14 +14,32 @@ func _unhandled_input(event):
 		var hit := get_mouse_world_position()
 		if hit == {}:
 			return
+		handle_selection(hit)
+		
+
+		
+	
+		
+func handle_selection(hit: Dictionary):
+	var obj = hit.collider
+	# default movement
+	if !obj.has_method("is_selectable"):
 		if unit != null:
 			unit.move_to(hit.position)
-			return
-		var obj = hit.collider
-		if obj.has_method("is_selectable"):
-			unit = obj.select_unit()
-			return
-		
+		return
+
+	# select unit
+	if unit == null:
+		unit = obj.select_unit()
+		return
+
+	# move a unit to target
+	if obj.is_enemy():
+		unit.move_to(obj.global_position)
+	else:
+		unit.move_to(hit.position)
+	return
+	
 
 func get_mouse_world_position() -> Dictionary:
 	var mouse_pos = get_viewport().get_mouse_position()

@@ -8,7 +8,7 @@ var speed = 10.0
 var is_selected = false
 var original_color : Color
 
-@export var is_enemy = true
+@export var enemy = true
 
 var self_mesh : Mesh 
 var material : Material
@@ -18,8 +18,11 @@ var is_moving : bool
 func is_selectable() -> bool:
 	return true 
 
+func is_enemy() -> bool:
+	return enemy
+
 func select_unit() -> Object:
-	if is_enemy:
+	if enemy:
 		return
 	is_selected = true
 	original_color = material.albedo_color
