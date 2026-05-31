@@ -14,11 +14,10 @@ height = 2.1
 
 [node name="Unit" type="CharacterBody3D" unique_id=641869344 groups=["Selectable"]]
 script = ExtResource("1_c58w5")
-is_enemy = false
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=986656251]
 path_desired_distance = 0.3
-target_desired_distance = 0.3
+target_desired_distance = 0.1
 avoidance_enabled = true
 debug_enabled = true
 debug_use_custom = true

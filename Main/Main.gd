@@ -15,17 +15,13 @@ func _unhandled_input(event):
 		if hit == {}:
 			return
 		handle_selection(hit)
-		
 
-		
-	
-		
 func handle_selection(hit: Dictionary):
 	var obj = hit.collider
 	# default movement
 	if !obj.has_method("is_selectable"):
 		if unit != null:
-			unit.move_to(hit.position)
+			unit.move_to(hit.position, null)
 		return
 
 	# select unit
@@ -35,9 +31,9 @@ func handle_selection(hit: Dictionary):
 
 	# move a unit to target
 	if obj.is_enemy():
-		unit.move_to(obj.global_position)
+		unit.move_to(obj.global_position, obj)
 	else:
-		unit.move_to(hit.position)
+		unit.move_to(hit.position, null)
 	return
 	
 
