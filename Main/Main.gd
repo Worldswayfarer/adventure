@@ -21,7 +21,7 @@ func handle_selection(hit: Dictionary):
 	# default movement
 	if !obj.has_method("is_selectable"):
 		if unit != null:
-			unit.move_to(hit.position, null)
+			unit.set_target(hit.position, null)
 		return
 
 	# select unit
@@ -31,9 +31,9 @@ func handle_selection(hit: Dictionary):
 
 	# move a unit to target
 	if obj.is_enemy():
-		unit.move_to(obj.global_position, obj)
+		unit.set_target(obj.global_position, obj)
 	else:
-		unit.move_to(hit.position, null)
+		unit.set_target(hit.position, null)
 	return
 	
 

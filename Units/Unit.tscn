@@ -9,14 +9,14 @@ albedo_color = Color(0, 0, 1, 1)
 material = SubResource("StandardMaterial3D_r3fl7")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c58w5"]
-radius = 0.55
+radius = 0.6
 height = 2.1
 
 [node name="Unit" type="CharacterBody3D" unique_id=641869344 groups=["Selectable"]]
 script = ExtResource("1_c58w5")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=986656251]
-path_desired_distance = 0.3
+path_desired_distance = 0.5
 target_desired_distance = 0.1
 avoidance_enabled = true
 debug_enabled = true

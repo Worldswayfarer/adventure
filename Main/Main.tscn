@@ -27,9 +27,12 @@ enemy = false
 
 [node name="Unit" parent="Enemies" unique_id=58730736 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.323078, 0, 6.999612)
+enemy = true
 
 [node name="Unit2" parent="Enemies" unique_id=589010348 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.664011, 0.27533436, -7.1022825)
+enemy = true
 
 [node name="Unit3" parent="Enemies" unique_id=1478317631 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5461481, 4.9216332, -5.411687)
+enemy = true
