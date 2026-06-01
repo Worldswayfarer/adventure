@@ -15,26 +15,41 @@ func _unhandled_input(event):
 		if hit == {}:
 			return
 		handle_selection(hit)
+	if event is InputEventMouseMotion and unit != null:
+		if unit.is_moving():
+			return
+		var hit := get_mouse_world_position()
+		if hit == {}:
+			return
+		handle_mouse_movement(hit)
+
+
+
+func handle_mouse_movement(hit: Dictionary):
+	var obj = hit.collider
+
+	# move a unit to target
+	if obj.has_method("is_enemy") and obj.is_enemy():
+		unit.set_target(obj.global_position, obj)
+	else:
+		unit.set_target(hit.position, null)
+	return
+
 
 func handle_selection(hit: Dictionary):
 	var obj = hit.collider
 	# default movement
 	if !obj.has_method("is_selectable"):
 		if unit != null:
-			unit.set_target(hit.position, null)
+			unit.move_to_target()
 		return
 
 	# select unit
 	if unit == null:
 		unit = obj.select_unit()
 		return
-
-	# move a unit to target
-	if obj.is_enemy():
-		unit.set_target(obj.global_position, obj)
-	else:
-		unit.set_target(hit.position, null)
-	return
+	unit.move_to_target()
+	
 	
 
 func get_mouse_world_position() -> Dictionary:

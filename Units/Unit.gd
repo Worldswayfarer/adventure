@@ -15,9 +15,10 @@ var original_color : Color
 var self_mesh : Mesh 
 var material : Material
 
-var is_moving : bool = false
+var _is_moving : bool = false
 
-var target = null
+var _target = null
+var _calculated_target_pos = Vector3.ZERO
 
 func is_selectable() -> bool:
 	return true 
@@ -38,7 +39,7 @@ func deselect_unit():
 	is_selected = false
 
 func _ready():
-	is_moving = false
+	_is_moving = false
 	var new_mesh = mesh.mesh.duplicate()
 	mesh.mesh = new_mesh
 	var new_mat = mesh.mesh.surface_get_material(0).duplicate(true)
@@ -49,52 +50,57 @@ func _ready():
 func _physics_process(_delta):
 	if agent.is_navigation_finished():
 		velocity = Vector3.ZERO
-		is_moving = false
-		target = null
+		_is_moving = false
+		_target = null
 		move_and_slide()
 		return
-	if !is_moving:
+	if !_is_moving:
 		return
 	var next = agent.get_next_path_position()
 	var next_vector : Vector3 = next - global_position
 	var new_velocity = next_vector.normalized() * speed
 	
 	agent.set_velocity(new_velocity)
-	
+
+
+func is_moving():
+	return _is_moving
+
+
+func move_to_target():
+	if _calculated_target_pos == Vector3.ZERO:
+		return
+	_is_moving = true
 
 func set_target(target_pos: Vector3, target_unit: Object):
 	agent.target_position = target_pos
 	
-	if target_unit == null:
-		is_moving = true
-		target = target_unit
-		return
-	
 	await agent.path_changed
 	var path := agent.get_current_navigation_path()
-	var stop_point := compute_stop_point(path)
+	var stop_point := compute_stop_point(path, target_unit)
 	agent.target_position = stop_point
-	is_moving = true
-	target = stop_point
+	_target = target_unit
+	_calculated_target_pos = stop_point
 
 
-func compute_stop_point(path: PackedVector3Array) -> Vector3:
+func compute_stop_point(path: PackedVector3Array, target: Object) -> Vector3:
 	var total_distance = 0.0
 
 	var target_position : Vector3 = path[path.size()-1]
+	var is_attacking = target != null
 
-	for i in range(path.size()-2):
+	for i in range(path.size()-1):
 		var current_point : Vector3 = path[i]
 		var next_point : Vector3 = path[i+1]
 		var segment_distance = current_point.distance_to(next_point)
 
 		var movement_range_reached = total_distance + segment_distance > movement_range
-		var is_in_attack_range = next_point.distance_to(target_position)
+		var is_in_attack_range = next_point.distance_to(target_position) < attack_range
 
 		var point_in_attack_range = Vector3.ZERO
 		var maximum_movement_point = Vector3.ZERO
 
-		if is_in_attack_range:
+		if is_attacking and is_in_attack_range:
 			point_in_attack_range = segment_sphere_intersection(
 					current_point, next_point, target_position, attack_range)
 
@@ -155,7 +161,7 @@ func segment_sphere_intersection(
 
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
-	if !is_moving:
+	if !_is_moving:
 		return
 	velocity = safe_velocity
 	move_and_slide()
