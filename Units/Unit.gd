@@ -10,7 +10,7 @@ var original_color : Color
 
 @export var enemy = true
 @export var attack_range = 2
-@export var movement_range = 10
+@export var movement_range = 20
 
 var self_mesh : Mesh 
 var material : Material
@@ -68,6 +68,12 @@ func is_moving():
 
 
 func move_to_target():
+	if _is_moving:
+		agent.set_velocity(Vector3.ZERO)
+		velocity = Vector3.ZERO
+		_is_moving = false
+		_target = null
+		move_and_slide()
 	if _calculated_target_pos == Vector3.ZERO:
 		return
 	_is_moving = true
@@ -88,14 +94,21 @@ func compute_stop_point(path: PackedVector3Array, target: Object) -> Vector3:
 
 	var target_position : Vector3 = path[path.size()-1]
 	var is_attacking = target != null
+	print("############")
+	print("Is attacking: ", is_attacking)
 
 	for i in range(path.size()-1):
 		var current_point : Vector3 = path[i]
 		var next_point : Vector3 = path[i+1]
 		var segment_distance = current_point.distance_to(next_point)
+		print("Segment length: ", segment_distance)
+		print("Total distance: ", total_distance)
 
 		var movement_range_reached = total_distance + segment_distance > movement_range
 		var is_in_attack_range = next_point.distance_to(target_position) < attack_range
+
+		print("Max Movement: ", movement_range_reached)
+		print("In attack range: ", is_in_attack_range)
 
 		var point_in_attack_range = Vector3.ZERO
 		var maximum_movement_point = Vector3.ZERO
@@ -122,7 +135,7 @@ func compute_stop_point(path: PackedVector3Array, target: Object) -> Vector3:
 			return point_in_attack_range
 		if maximum_movement_point != Vector3.ZERO:
 			return maximum_movement_point
-
+		total_distance += segment_distance
 
 	return target_position
 

@@ -24,10 +24,16 @@ func _unhandled_input(event):
 		handle_mouse_movement(hit)
 
 
+var last_mouse_position : Vector3 = Vector3.INF
+var last_target = null
+const MIN_DISTANCE : float = 0.2
 
 func handle_mouse_movement(hit: Dictionary):
 	var obj = hit.collider
+	if last_mouse_position.distance_to(hit.position) < MIN_DISTANCE:
+		return
 
+	last_mouse_position = hit.position
 	# move a unit to target
 	if obj.has_method("is_enemy") and obj.is_enemy():
 		unit.set_target(obj.global_position, obj)

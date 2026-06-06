@@ -14,6 +14,10 @@ config/name="Adventure"
 run/main_scene="uid://d2p4ar7vduvbx"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[autoload]
+
+Signals="*uid://d0jpahs514lop"
+
 [dotnet]
 
 project/assembly_name="Adventure"

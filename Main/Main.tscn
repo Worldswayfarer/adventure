@@ -9,6 +9,13 @@
 [node name="Node3D" type="Node3D" unique_id=998961211]
 script = ExtResource("1_r0du0")
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1265157422]
+
+[node name="Debug" type="Label" parent="CanvasLayer" unique_id=964957086]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "DEBUG"
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=104722961]
 transform = Transform3D(0.5552219, 0.5881023, -0.58810234, 0, 0.7071068, 0.70710677, 0.8317023, -0.39260113, 0.39260113, -19.804646, 10, 10)
 current = true
@@ -27,12 +34,9 @@ enemy = false
 
 [node name="Unit" parent="Enemies" unique_id=58730736 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.323078, 0, 6.999612)
-enemy = true
 
 [node name="Unit2" parent="Enemies" unique_id=589010348 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.664011, 0.27533436, -7.1022825)
-enemy = true
 
 [node name="Unit3" parent="Enemies" unique_id=1478317631 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5461481, 4.9216332, -5.411687)
-enemy = true
