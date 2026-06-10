@@ -48,11 +48,9 @@ func _ready():
 	material = new_mesh.material
 
 func _physics_process(_delta):
+	
 	if agent.is_navigation_finished():
-		velocity = Vector3.ZERO
-		_is_moving = false
-		_target = null
-		move_and_slide()
+		finish_movement()
 		return
 	if !_is_moving:
 		return
@@ -67,13 +65,24 @@ func is_moving():
 	return _is_moving
 
 
+func finish_movement():
+	velocity = Vector3.ZERO
+	_is_moving = false
+	move_and_slide()
+	attack_target()
+
+func attack_target():
+	if _target == null:
+		print("attacking no target, this shouldnt happen")
+		return
+	if global_position.distance_to(_target.global_position) > (attack_range + 0.1):
+		print("out_of_range")
+		return 
+	print("attacking_target")
+	_target.queue_free()
+	_target = null
+
 func move_to_target():
-	if _is_moving:
-		agent.set_velocity(Vector3.ZERO)
-		velocity = Vector3.ZERO
-		_is_moving = false
-		_target = null
-		move_and_slide()
 	if _calculated_target_pos == Vector3.ZERO:
 		return
 	_is_moving = true
@@ -94,21 +103,14 @@ func compute_stop_point(path: PackedVector3Array, target: Object) -> Vector3:
 
 	var target_position : Vector3 = path[path.size()-1]
 	var is_attacking = target != null
-	print("############")
-	print("Is attacking: ", is_attacking)
 
 	for i in range(path.size()-1):
 		var current_point : Vector3 = path[i]
 		var next_point : Vector3 = path[i+1]
 		var segment_distance = current_point.distance_to(next_point)
-		print("Segment length: ", segment_distance)
-		print("Total distance: ", total_distance)
 
 		var movement_range_reached = total_distance + segment_distance > movement_range
 		var is_in_attack_range = next_point.distance_to(target_position) < attack_range
-
-		print("Max Movement: ", movement_range_reached)
-		print("In attack range: ", is_in_attack_range)
 
 		var point_in_attack_range = Vector3.ZERO
 		var maximum_movement_point = Vector3.ZERO
