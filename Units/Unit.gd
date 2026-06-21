@@ -2,7 +2,8 @@ extends CharacterBody3D
 class_name Unit
 
 @onready var agent : NavigationAgent3D = $NavigationAgent3D
-@onready var mesh : MeshInstance3D  = $MeshInstance3D
+@onready var mesh : MeshInstance3D  = $Unit2/metarig/Skeleton3D/Unit
+@onready var animation_player : AnimationPlayer = $Unit2/AnimationPlayer
 
 var speed = 10.0
 var is_selected = false
@@ -43,11 +44,13 @@ func _ready():
 	var new_mesh = mesh.mesh.duplicate()
 	mesh.mesh = new_mesh
 	var new_mat = mesh.mesh.surface_get_material(0).duplicate(true)
-	mesh.mesh.surface_set_material(0, new_mat)
+	new_mesh.surface_set_material(0, new_mat)
+	material = new_mat
+	
 
-	material = new_mesh.material
+	animation_player.animation_finished.connect(_on_animation_finished)
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	
 	if agent.is_navigation_finished():
 		finish_movement()
@@ -57,7 +60,8 @@ func _physics_process(_delta):
 	var next = agent.get_next_path_position()
 	var next_vector : Vector3 = next - global_position
 	var new_velocity = next_vector.normalized() * speed
-	
+	var target_yaw = atan2(new_velocity.x, velocity.z)
+	rotation.y = lerp_angle(rotation.y, target_yaw, delta * 10.0)
 	agent.set_velocity(new_velocity)
 
 
@@ -79,6 +83,7 @@ func attack_target():
 		print("out_of_range")
 		return 
 	print("attacking_target")
+	animation_player.play("Attack")
 	_target.queue_free()
 	_target = null
 
@@ -174,6 +179,8 @@ func segment_sphere_intersection(
 	return Vector3.ZERO
 
 
+func _on_animation_finished():
+	animation_player.stop()
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
 	if !_is_moving:
