@@ -3,8 +3,16 @@ extends Node3D
 @onready var camera = $Camera3D
 @onready var unit : Unit = null
 @onready var grid = $TacticalGrid
+@onready var turn_manager = $TurnManager
 
 func _unhandled_input(event):
+	if event.is_action_pressed("switch_turn"):
+		turn_manager.switch_turn()
+	
+	if !turn_manager.is_player_turn():
+		return
+	
+	# player controls
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		if unit == null:
 			return

@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://djunu74liqxvx" path="res://Navigation/tactical_grid.gd" id="2_r0du0"]
 [ext_resource type="PackedScene" uid="uid://dqn60l1l7g4mn" path="res://Units/Unit.tscn" id="4_fos0i"]
 [ext_resource type="PackedScene" uid="uid://d1i0voqajdokf" path="res://Navigation/Navigation.tscn" id="5_3dxm6"]
+[ext_resource type="Script" uid="uid://d1tenqliex4ud" path="res://Main/turn_manager.gd" id="6_u2i7p"]
 
 [node name="Node3D" type="Node3D" unique_id=998961211]
 script = ExtResource("1_r0du0")
@@ -40,3 +41,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.664011, 0.27533436, -7.102
 
 [node name="Unit3" parent="Enemies" unique_id=1478317631 instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5461481, 4.9216332, -5.411687)
+
+[node name="TurnManager" type="Node3D" parent="." unique_id=1807625009]
+script = ExtResource("6_u2i7p")
