@@ -46,13 +46,14 @@ func _ready():
 	var new_mat = mesh.mesh.surface_get_material(0).duplicate(true)
 	new_mesh.surface_set_material(0, new_mat)
 	material = new_mat
-	
 
-	animation_player.animation_finished.connect(_on_animation_finished)
+	if enemy:
+		material.albedo_color = Color.RED
+	
 
 func _physics_process(delta):
 	
-	if agent.is_navigation_finished():
+	if agent.is_navigation_finished() and _is_moving:
 		finish_movement()
 		return
 	if !_is_moving:
@@ -178,9 +179,6 @@ func segment_sphere_intersection(
 
 	return Vector3.ZERO
 
-
-func _on_animation_finished():
-	animation_player.stop()
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
 	if !_is_moving:
