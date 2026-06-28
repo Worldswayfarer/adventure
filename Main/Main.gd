@@ -9,8 +9,6 @@ func _unhandled_input(event):
 	if event.is_action_pressed("switch_turn"):
 		turn_manager.switch_turn()
 	
-	if !turn_manager.is_player_turn():
-		return
 	
 	# player controls
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -23,6 +21,10 @@ func _unhandled_input(event):
 		if hit == {}:
 			return
 		handle_selection(hit)
+		
+	if !turn_manager.is_player_turn():
+		return
+		
 	if event is InputEventMouseMotion and unit != null:
 		if unit.is_moving():
 			return
@@ -51,19 +53,21 @@ func handle_mouse_movement(hit: Dictionary):
 
 
 func handle_selection(hit: Dictionary):
-	var obj = hit.collider
-	# default movement
-	if !obj.has_method("is_selectable"):
-		if unit != null:
-			unit.move_to_target()
+	var target = hit.collider
+	if unit == null and target.has_method("is_selectable"):
+		unit = target.select_unit()
 		return
+	if turn_manager.is_player_turn():
+		handle_movement(target)
 
-	# select unit
+
+func handle_movement(target):
 	if unit == null:
-		unit = obj.select_unit()
+		return
+	if target.has_method("is_selectable"):
+		unit.move_to_target()
 		return
 	unit.move_to_target()
-	
 	
 
 func get_mouse_world_position() -> Dictionary:
