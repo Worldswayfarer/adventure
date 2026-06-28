@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dqn60l1l7g4mn" path="res://Units/Unit.tscn" id="4_fos0i"]
 [ext_resource type="PackedScene" uid="uid://d1i0voqajdokf" path="res://Navigation/Navigation.tscn" id="5_3dxm6"]
 [ext_resource type="Script" uid="uid://d1tenqliex4ud" path="res://Main/turn_manager.gd" id="6_u2i7p"]
+[ext_resource type="Script" uid="uid://cmw2b5v8kfagj" path="res://EnemyManager/enemy_manager.gd" id="7_hh5pf"]
 
 [node name="Node3D" type="Node3D" unique_id=998961211]
 script = ExtResource("1_r0du0")
@@ -31,16 +32,20 @@ enemy = false
 
 [node name="Navigation" parent="." unique_id=138715284 instance=ExtResource("5_3dxm6")]
 
-[node name="Enemies" type="Node3D" parent="." unique_id=1201024514]
-
-[node name="Unit" parent="Enemies" unique_id=58730736 instance=ExtResource("4_fos0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.323078, 0, 6.999612)
-
-[node name="Unit2" parent="Enemies" unique_id=589010348 instance=ExtResource("4_fos0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.664011, 0.27533436, -7.1022825)
-
-[node name="Unit3" parent="Enemies" unique_id=1478317631 instance=ExtResource("4_fos0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5461481, 4.9216332, -5.411687)
-
 [node name="TurnManager" type="Node3D" parent="." unique_id=1807625009]
 script = ExtResource("6_u2i7p")
+
+[node name="EnemyManager" type="Node3D" parent="." unique_id=263781728]
+script = ExtResource("7_hh5pf")
+metadata/_custom_type_script = "uid://cmw2b5v8kfagj"
+
+[node name="Enemies" type="Node3D" parent="EnemyManager" unique_id=1201024514]
+
+[node name="Unit" parent="EnemyManager/Enemies" unique_id=58730736 instance=ExtResource("4_fos0i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.323078, 0, 6.999612)
+
+[node name="Unit2" parent="EnemyManager/Enemies" unique_id=589010348 instance=ExtResource("4_fos0i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.664011, 0.27533436, -7.1022825)
+
+[node name="Unit3" parent="EnemyManager/Enemies" unique_id=1478317631 instance=ExtResource("4_fos0i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5461481, 4.9216332, -5.411687)

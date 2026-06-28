@@ -3,11 +3,20 @@ extends Node3D
 @onready var camera = $Camera3D
 @onready var unit : Unit = null
 @onready var grid = $TacticalGrid
-@onready var turn_manager = $TurnManager
+@onready var turn_manager : TurnManager = $TurnManager
+@onready var enemy_manager : EnemyManager = $EnemyManager
+@onready var player : Unit = $Unit
+
+
+func _ready():
+	enemy_manager.setup(player)
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("switch_turn"):
 		turn_manager.switch_turn()
+		if !turn_manager.is_player_turn():
+			enemy_manager.do_enemy_turn()
 	
 	
 	# player controls
@@ -46,9 +55,9 @@ func handle_mouse_movement(hit: Dictionary):
 	last_mouse_position = hit.position
 	# move a unit to target
 	if obj.has_method("is_enemy") and obj.is_enemy():
-		unit.set_target(obj.global_position, obj)
+		unit.start_movement(obj.global_position, obj)
 	else:
-		unit.set_target(hit.position, null)
+		unit.start_movement(hit.position, null)
 	return
 
 
