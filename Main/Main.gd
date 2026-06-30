@@ -10,6 +10,7 @@ extends Node3D
 
 func _ready():
 	enemy_manager.setup(player)
+	turn_manager.setup(player, enemy_manager)
 
 
 func _unhandled_input(event):

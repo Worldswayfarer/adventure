@@ -12,6 +12,11 @@ func setup(player: Unit):
 	_player = player
 
 
+func switch_turn():
+	for enemy : Unit in enemies.get_children():
+		enemy.switch_turn()
+
+
 func do_enemy_turn():
-	for enemy in enemies.get_children():
+	for enemy : Unit in enemies.get_children():
 		PathManager.set_target_for_pathfinding(enemy, _player.global_position, _player)

@@ -19,9 +19,14 @@ var _is_moving : bool = false
 
 ####### stats
 
+# Movement
 var speed = 10.0
-@export var attack_range = 2
-@export var movement_range = 20
+@export var attack_range = 2.0
+@export var movement_range = 20.0
+@export var movement_points = movement_range
+@export var distance_traveling = 0.0
+
+# Combat
 @export var max_health : int = 10
 @export var current_health : int = max_health
 @export var damage : int = 5
@@ -44,6 +49,9 @@ func take_damage(dmg : int):
 	if current_health < 1 :
 		queue_free()
 
+
+func switch_turn():
+	movement_points = movement_range
 
 func is_selectable() -> bool:
 	return true 
@@ -116,6 +124,7 @@ func move_to_target():
 	if calculated_target_pos == Vector3.ZERO:
 		return
 	_is_moving = true
+	movement_points -= distance_traveling
 
 
 func start_movement(target_pos: Vector3, target_unit: Object):
