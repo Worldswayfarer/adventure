@@ -5,29 +5,44 @@ class_name Unit
 @onready var mesh : MeshInstance3D  = $Unit2/metarig/Skeleton3D/Unit
 @onready var animation_player : AnimationPlayer = $Unit2/AnimationPlayer
 
-var speed = 10.0
+
 var is_selected = false
 var original_color : Color
 
 @export var enemy = true
-@export var attack_range = 2
-@export var movement_range = 20
+
 
 var self_mesh : Mesh 
 var material : Material
 
 var _is_moving : bool = false
 
+####### stats
+
+var speed = 10.0
+@export var attack_range = 2
+@export var movement_range = 20
+@export var max_health : int = 10
+@export var current_health : int = max_health
+@export var damage : int = 5
+
+#######
 
 # Currently needs to be public
 
-var target = null:
+var target : Unit = null:
 	set(value): target = value
 
 var calculated_target_pos = Vector3.ZERO:
 	set(value): calculated_target_pos = value
 
 #
+
+
+func take_damage(dmg : int):
+	current_health -= dmg
+	if current_health < 1 :
+		queue_free()
 
 
 func is_selectable() -> bool:
@@ -94,7 +109,7 @@ func attack_target():
 		return 
 	print("attacking_target")
 	animation_player.play("Attack")
-	target.queue_free()
+	target.take_damage(damage)
 	target = null
 
 func move_to_target():
