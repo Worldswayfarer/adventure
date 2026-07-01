@@ -16,6 +16,8 @@ func switch_turn():
 	for enemy : Unit in enemies.get_children():
 		enemy.switch_turn()
 
+func number_of_enemies():
+	return enemies.get_child_count()
 
 func do_enemy_turn():
 	for enemy : Unit in enemies.get_children():
